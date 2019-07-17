@@ -37,12 +37,6 @@ void ConsumerHandler::UpdateDB(std::string msg_update,int offset)
 	time(&timep);
 	uint64_t current_time = (uint64_t)timep;
 
-	if (current_time - last_time_step_ >= 1 )
-	{
-		pdb->BatchSqlQuery(vect_sql_);
-		last_time_step_ = current_time;
-		vect_sql_.clear();
-	}
 
 	std::cout << "UpdateDB : " << msg_update << std::endl;
 	json json_data = json::parse(msg_update);
@@ -61,16 +55,14 @@ void ConsumerHandler::UpdateDB(std::string msg_update,int offset)
 	if (event == 3)
 	{
 		std::string delete_sql =  "delete from kafka_orders where id = '" + std::to_string(id) +"';";
-		// pdb->DeleteData(delete_sql);
-		vect_sql_.push_back(delete_sql);
+		pdb->DeleteData(delete_sql);
 		return ;
 	}
 
 	if (event == 2)
 	{
 		std::string delete_sql = "delete from kafka_orders where event = 1 and id = '" + std::to_string(id) +"';";
-		// pdb->DeleteData(delete_sql);
-		vect_sql_.push_back(delete_sql);
+		pdb->DeleteData(delete_sql);
 	}
 
 	uint64_t user = json_order["user"].get<int64_t>();
