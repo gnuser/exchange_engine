@@ -13,6 +13,8 @@ int64_t get_user_balance_history_total(MYSQL *conn, uint32_t user_id,
     sds sql = sdsempty();
     sql = sdscatprintf(sql, "SELECT count(*) FROM `balance_history_%u` WHERE `user_id` = %u"
             , user_id % HISTORY_HASH_NUM, user_id);
+    // 过滤掉被抢红包的领取数据
+    sql = sdscatprintf(sql, " AND (NOT (`business` = 'envelope' AND detail LIKE '%s' AND `change` < 0))", "%\"action\": 2%");
 
     size_t asset_len = strlen(asset);
     if (asset_len > 0) {
@@ -57,6 +59,8 @@ json_t *get_user_balance_history(MYSQL *conn, uint32_t user_id,
     sds sql = sdsempty();
     sql = sdscatprintf(sql, "SELECT `time`, `asset`, `business`, `change`, `balance`, `detail` FROM `balance_history_%u` WHERE `user_id` = %u",
             user_id % HISTORY_HASH_NUM, user_id);
+    // 过滤掉被抢红包的领取数据
+    sql = sdscatprintf(sql, " AND (NOT (`business` = 'envelope' AND detail LIKE '%s' AND `change` < 0))", "%\"action\": 2%");
 
     size_t asset_len = strlen(asset);
     if (asset_len > 0) {
