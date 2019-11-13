@@ -22,7 +22,7 @@ typedef struct nw_buf {
 
 /* nw_buf_pool is a factory of nw_buf */
 typedef struct nw_buf_pool {
-    uint32_t size;
+    uint32_t size; // 不是内存池的大小,是内存池里面单个内存节点的大小
     uint32_t used;
     uint32_t free;
     uint32_t free_total;

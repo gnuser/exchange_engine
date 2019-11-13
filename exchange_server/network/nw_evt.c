@@ -32,6 +32,7 @@ void nw_loop_init(void)
         return;
 
     unsigned int flag = 0;
+    // man ev
     flag |= EVFLAG_AUTO;
     flag |= EVFLAG_NOENV;
     flag |= EVFLAG_FORKCHECK;

@@ -21,7 +21,7 @@ static int create_socket(int family, int sock_type)
         return -1;
     }
     if (sock_type == SOCK_STREAM && (family == AF_INET || family == AF_INET6)) {
-        if (nw_sock_set_no_delay(sockfd) < 0) {
+        if (nw_sock_set_no_delay(sockfd) < 0) { // https://www.jianshu.com/p/ccafdeda0b95 Nagle算法开启,减小小分组的报文个数
             close(sockfd);
             return -1;
         }
@@ -58,6 +58,8 @@ static void generate_random_path(char *path, size_t size, char *prefix, char *su
         randname[i] = 'a' + rand() % 26;
     }
     randname[10] = '\0';
+    // P_tmpdir http://www.cplusplus.com/forum/beginner/108184/
+    // snprintf https://blog.csdn.net/sky1203850702/article/details/52778831
     snprintf(path, size, "%s/%s%s%s", P_tmpdir, prefix, randname, suffix);
 }
 
