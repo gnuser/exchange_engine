@@ -53,6 +53,7 @@ See [requirements](https://github.com/viabtc/viabtc_exchange_server/wiki/require
 
 ```
 sudo apt install -y libev-dev libjansson-dev libmpdec-dev libmysqlclient-dev libcurl4-gnutls-dev libldap2-dev libgss-dev librtmp-dev
+sudo apt install librdkafka-dev liblz4-dev libsasl2-dev
 ```
 
 You MUST use the depends/hiredis to install the hiredis library. Or it may not be compatible.
