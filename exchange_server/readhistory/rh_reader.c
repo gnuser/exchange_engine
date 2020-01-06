@@ -15,6 +15,8 @@ int64_t get_user_balance_history_total(MYSQL *conn, uint32_t user_id,
             , user_id % HISTORY_HASH_NUM, user_id);
     // 过滤掉被抢红包的领取数据
     sql = sdscatprintf(sql, " AND (NOT (`business` = 'envelope' AND detail LIKE '%s' AND `change` < 0))", "%\"action\": 2%");
+    // 过滤掉提现锁定和解锁的数据
+    sql = sdscatprintf(sql, " AND (`business` not in ('withdraw_lock', 'withdraw_unlock')");
 
     size_t asset_len = strlen(asset);
     if (asset_len > 0) {
@@ -61,6 +63,9 @@ json_t *get_user_balance_history(MYSQL *conn, uint32_t user_id,
             user_id % HISTORY_HASH_NUM, user_id);
     // 过滤掉被抢红包的领取数据
     sql = sdscatprintf(sql, " AND (NOT (`business` = 'envelope' AND detail LIKE '%s' AND `change` < 0))", "%\"action\": 2%");
+    // 过滤掉提现锁定和解锁的数据
+    sql = sdscatprintf(sql, " AND (`business` not in ('withdraw_lock', 'withdraw_unlock')");
+
 
     size_t asset_len = strlen(asset);
     if (asset_len > 0) {
