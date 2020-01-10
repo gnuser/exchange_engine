@@ -296,7 +296,7 @@ int insert_asset_to_db(const char *asset)
         return -__LINE__;
     }
     sdsfree(sql);
-
+    mysql_close(conn);
     return 0; 
 }
 
@@ -324,7 +324,8 @@ int insert_market_to_db(uint32_t buy_id, uint32_t sell_id, double min_count)
         return -__LINE__;
     }
     sdsfree(sql);
-
+    mysql_close(conn);
+    
     return 0; 
 }
 
